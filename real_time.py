@@ -38,7 +38,19 @@ def play_video():
             img_with_txt = add_text(resized, str(0))
         else:
             upper, lower = count_dots(slope_prep, prep_point, centers)
-            img_with_txt = add_text(resized, f'({str(upper)}, {str(lower)})')
+            img_with_blobs, _ = get_shot_blob(resized,
+                                            filter_by_area = True,
+                                            A = (1,500),
+                                            filter_by_color = False,
+                                            filter_by_circularity = True,
+                                            min_circularity = 0.85,
+                                            filter_by_covexity = True,
+                                            min_convexity = 0.9, 
+                                            min_dist_between_blobs = 0,
+                                            filter_by_inertia = False,
+                                            min_inertia_ratio = 0.15 # 0.66 
+                                            )
+            img_with_txt = add_text(img_with_blobs, f'({str(upper)}, {str(lower)})')
         
         cv2.imshow('vid',img_with_txt)
         if cv2.waitKey(25) & 0xFF == ord('q'):
